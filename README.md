@@ -10,7 +10,7 @@ This repository contains a Flask API and a Streamlit client for exploring water 
 - `client/` - Streamlit dashboard
 	- `streamlit.py` - Interactive dashboard to query the API and render visualizations
 - `data/` - Source CSV files used for ingestion
-- `output_data/cleaned.csv` - Cleaned dataset produced by `app/main.py`
+- `data/cleaned.csv` - Cleaned dataset produced by `app/main.py`
 - `requirements.txt` - Python dependencies
 - `README.md` - (this file)
 
@@ -177,7 +177,7 @@ Response (iqr example includes IQR stats and bounds):
 
 ## Data Ingestion and Cleaning
 
-`app/main.py` reads CSV files from `data/source_data/`, computes z-scores to identify and remove extreme outliers, and writes cleaned rows to `output_data/cleaned.csv`. It also inserts cleaned records into the MongoDB collection `water_quality_data.asv_1`.
+`app/main.py` reads CSV files from `data/source_data/`, computes z-scores to identify and remove extreme outliers, and writes cleaned rows to `data/cleaned.csv`. It also inserts cleaned records into the MongoDB collection `water_quality_data.asv_1`.
 
 If you want to re-run ingestion:
 
