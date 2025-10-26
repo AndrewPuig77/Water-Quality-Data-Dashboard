@@ -14,7 +14,8 @@ This repository contains a Flask API and a Streamlit client for exploring water 
 
 - `api/` - Flask API server
 	- `app.py` - REST API for observations, stats, outliers, and health checks
-	- `main.py` - CSV ingestion and cleaning (z-score based outlier removal) that produces `data/cleaned.csv` and inserts cleaned records into MongoDB
+- `main/` folder for main python file
+    - `main.py` - CSV ingestion and cleaning (z-score based outlier removal) that produces `data/cleaned.csv` and inserts cleaned records into MongoDB
 - `client/` - Streamlit dashboard
 	- `streamlit.py` - Interactive dashboard to query the API and render visualizations
 - `data/` - Source CSV files used for ingestion
