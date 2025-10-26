@@ -66,7 +66,7 @@ By default the API runs on `http://127.0.0.1:5000`.
 
 5. Run csv file cleaner
 ```powershell
-python api/main.py
+python main/main.py
 ```
 
 6. Start the Streamlit client (in a separate terminal)
