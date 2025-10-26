@@ -2,6 +2,14 @@
 
 This repository contains a Flask API and a Streamlit client for exploring water quality observations (temperature, salinity, ODO, and geolocation data). The project demonstrates data cleaning, server-side aggregation, pagination, summary statistics, and outlier detection.
 
+##Contributors
+- [@AndrewPuig77](https://github.com/AndrewPuig77)- Andrew Puig - Collaborator
+- [@devsingh1625](https://github.com/devsingh1625) — Devpreet Singh — Collaborator
+- [@MCobos3](https://github.com/MCobos3) — Matt Cobos — Collaborator
+- [@Sword105](https://github.com/Sword105) — Ethan Drouillard - Collaborator
+
+
+
 ## Contents
 
 - `app/` - Flask API server
