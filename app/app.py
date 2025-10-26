@@ -176,13 +176,167 @@ def get_stats():
     
     return jsonify(stats)
 
-
-#----- Get Outliers -----
-@app.route("/api/outliers", methods=["GET"])
+# ---- Get Outliers ----
+app.route("/api/outliers", methods=["GET"])
 def get_outliers():
-    # Required parameters
+    """
+    Detect outliers using either Z-score or IQR method.
+    
+    Query parameters:
+    - field: temperature, salinity, or odo (required)
+    - method: zscore or iqr (default: zscore)
+    - k: threshold value (default: 3.0 for zscore, 1.5 for iqr)
+    """
+    # Get parameters
     field = request.args.get("field")
-    method = request.args.get("method", "iqr").lower()
+    method = request.args.get("method", "zscore").lower()
+    
+    # Validate field
+    valid_fields = ["temperature", "salinity", "odo"]
+    if field not in valid_fields:
+        return jsonify({"error": f"field must be one of {valid_fields}"}), 400
+    
+    # Validate method
+    if method not in ["zscore", "iqr"]:
+        return jsonify({"error": "method must be 'zscore' or 'iqr'"}), 400
+    
+    # Get k value with appropriate default
+    try:
+        k = float(request.args.get("k", 3.0 if method == "zscore" else 1.5))
+    except ValueError:
+        return jsonify({"error": "k must be a valid number"}), 400
+    
+    try:
+        # Calculate statistics for the field
+        pipeline = [
+            {"$match": {field: {"$ne": None, "$exists": True}}},
+            {
+                "$group": {
+                    "_id": None,
+                    "avg": {"$avg": f"${field}"},
+                    "stddev": {"$stdDevPop": f"${field}"}
+                }
+            }
+        ]
+        stats_result = list(collection.aggregate(pipeline))
+        
+        if not stats_result:
+            return jsonify({
+                "count": 0,
+                "outliers": [],
+                "method": method,
+                "field": field,
+                "k": k
+            })
+        
+        avg = stats_result[0]["avg"]
+        stddev = stats_result[0]["stddev"]
+        
+        if method == "zscore":
+            # Z-score method
+            if stddev == 0 or stddev is None:
+                return jsonify({
+                    "count": 0,
+                    "outliers": [],
+                    "method": method,
+                    "field": field,
+                    "k": k,
+                    "message": "Standard deviation is zero, no outliers detected"
+                })
+            
+            # Find outliers using aggregation pipeline
+            outlier_pipeline = [
+                {"$match": {field: {"$ne": None, "$exists": True}}},
+                {
+                    "$addFields": {
+                        "z_score": {
+                            "$divide": [
+                                {"$subtract": [f"${field}", avg]},
+                                stddev
+                            ]
+                        }
+                    }
+                },
+                {
+                    "$match": {
+                        "$expr": {
+                            "$gt": [
+                                {"$abs": "$z_score"},
+                                k
+                            ]
+                        }
+                    }
+                },
+                {"$project": {"_id": 0}}
+            ]
+            
+        else:  # IQR method
+            # Calculate Q1, Q3 for IQR
+            all_values = list(collection.find(
+                {field: {"$ne": None, "$exists": True}},
+                {field: 1, "_id": 0}
+            ))
+            
+            if not all_values:
+                return jsonify({
+                    "count": 0,
+                    "outliers": [],
+                    "method": method,
+                    "field": field,
+                    "k": k
+                })
+            
+            values = sorted([doc[field] for doc in all_values if doc.get(field) is not None])
+            n = len(values)
+            
+            q1_idx = n // 4
+            q3_idx = (3 * n) // 4
+            
+            q1 = values[q1_idx]
+            q3 = values[q3_idx]
+            iqr = q3 - q1
+            
+            lower_bound = q1 - k * iqr
+            upper_bound = q3 + k * iqr
+            
+            # Find outliers
+            outlier_pipeline = [
+                {
+                    "$match": {
+                        field: {"$ne": None, "$exists": True},
+                        "$or": [
+                            {field: {"$lt": lower_bound}},
+                            {field: {"$gt": upper_bound}}
+                        ]
+                    }
+                },
+                {"$project": {"_id": 0}}
+            ]
+        
+        # Execute the pipeline
+        outliers = list(collection.aggregate(outlier_pipeline))
+        outliers = clean_nan(outliers)
+        
+        return jsonify({
+            "count": len(outliers),
+            "outliers": outliers,
+            "method": method,
+            "field": field,
+            "k": k,
+            "statistics": {
+                "mean": avg,
+                "stddev": stddev
+            } if method == "zscore" else {
+                "q1": q1,
+                "q3": q3,
+                "iqr": iqr,
+                "lower_bound": lower_bound,
+                "upper_bound": upper_bound
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
     if not field:
         return jsonify({"error": "field parameter is required"}), 400
