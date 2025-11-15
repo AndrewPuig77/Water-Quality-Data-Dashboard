@@ -45,27 +45,27 @@ The system handles temperature (°C), salinity (ppt), dissolved oxygen (mg/L), p
 [Dashboard Overview]<img width="3648" height="1946" alt="Screenshot 2025-11-15 180209" src="https://github.com/user-attachments/assets/262dcc69-7a04-4a07-a7d5-8016446d6e90" />
 
 Left Sidebar - Filter Controls
-1. Date Filtering
+**Date Filtering**
 
 -Single Date Mode: Select a specific date to view data from that day only
 -Date Range Mode: Choose start and end dates to analyze trends over time
 
-2. Temperature Range (°C)
+**Temperature Range (°C)**
 
 -Min Temp: Set lower temperature threshold (e.g., 26°C)
 -Max Temp: Set upper temperature threshold (e.g., 30°C)
 
-3. Salinity Range (ppt - parts per thousand)
+**Salinity Range (ppt - parts per thousand)**
 
 -Min Salinity: Filter for low salinity zones (freshwater influence)
 -Max Salinity: Filter for high salinity zones (ocean water)
 
-4. Dissolved Oxygen - ODO Range (mg/L)
+**Dissolved Oxygen - ODO Range (mg/L)**
 
 -Min ODO: Set minimum oxygen threshold (e.g., 4.0 mg/L)
 -Max ODO: Set maximum oxygen threshold (e.g., 6.0 mg/L)
 
-5. Pagination Controls
+**Pagination Controls**
 
 -Limit: Records per page (100-1000)
 -Skip: Navigate through pages of results
