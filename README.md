@@ -47,29 +47,28 @@ The system handles temperature (°C), salinity (ppt), dissolved oxygen (mg/L), p
 Left Sidebar - Filter Controls
 1. Date Filtering
 
-Single Date Mode: Select a specific date to view data from that day only
-Date Range Mode: Choose start and end dates to analyze trends over time
+-Single Date Mode: Select a specific date to view data from that day only
+-Date Range Mode: Choose start and end dates to analyze trends over time
 
 2. Temperature Range (°C)
 
-Min Temp: Set lower temperature threshold (e.g., 26°C)
-Max Temp: Set upper temperature threshold (e.g., 30°C)
+-Min Temp: Set lower temperature threshold (e.g., 26°C)
+-Max Temp: Set upper temperature threshold (e.g., 30°C)
 
 3. Salinity Range (ppt - parts per thousand)
 
-Min Salinity: Filter for low salinity zones (freshwater influence)
-Max Salinity: Filter for high salinity zones (ocean water)
-Use Case: Identify estuarine mixing zones or freshwater intrusion areas
+-Min Salinity: Filter for low salinity zones (freshwater influence)
+-Max Salinity: Filter for high salinity zones (ocean water)
 
 4. Dissolved Oxygen - ODO Range (mg/L)
 
-Min ODO: Set minimum oxygen threshold (e.g., 4.0 mg/L)
-Max ODO: Set maximum oxygen threshold (e.g., 6.0 mg/L)
+-Min ODO: Set minimum oxygen threshold (e.g., 4.0 mg/L)
+-Max ODO: Set maximum oxygen threshold (e.g., 6.0 mg/L)
 
 5. Pagination Controls
 
-Limit: Records per page (100-1000)
-Skip: Navigate through pages of results
+-Limit: Records per page (100-1000)
+-Skip: Navigate through pages of results
 
 The main dashboard displays water quality observations in an interactive table with:
 - **Date Range Filtering**: Filter data by specific date ranges (e.g., 11/08/25 → 11/15/25)
