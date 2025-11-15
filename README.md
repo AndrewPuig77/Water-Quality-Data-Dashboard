@@ -39,8 +39,8 @@ The system handles temperature (°C), salinity (ppt), dissolved oxygen (mg/L), p
 
 ### 🔍 Interactive Data Table with Filters
 
-![Dashboard Overview](<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />)
-<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />
+![Dashboard Overview]<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />
+
 
 The main dashboard displays water quality observations in an interactive table with:
 - **Date Range Filtering**: Filter data by specific date ranges (e.g., 11/08/25 → 11/15/25)
