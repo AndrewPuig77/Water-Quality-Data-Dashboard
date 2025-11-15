@@ -1,6 +1,9 @@
-# Water Quality Data Dashboard 🌊
+# Water Quality Data Dashboard
 
 A full-stack environmental monitoring platform for processing, analyzing, and visualizing water quality data collected by autonomous surface vehicles (ASVs) in FIU's Biscayne Bay marine robotics expeditions.
+
+https://github.com/gregorymurad/marineRobotics
+
 
 ## Contributors
 
@@ -11,7 +14,7 @@ A full-stack environmental monitoring platform for processing, analyzing, and vi
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [Overview](#overview)
 - [Features & Dashboard](#features--dashboard)
@@ -23,7 +26,7 @@ A full-stack environmental monitoring platform for processing, analyzing, and vi
 
 ---
 
-## 🎯 Overview
+##  Overview
 
 This project provides a comprehensive solution for environmental researchers and scientists to:
 - Clean and process raw water quality sensor data
@@ -35,9 +38,9 @@ The system handles temperature (°C), salinity (ppt), dissolved oxygen (mg/L), p
 
 ---
 
-## ✨ Features & Dashboard
+##  Features & Dashboard
 
-### 🔍 Interactive Data Table with Filters
+###  Interactive Data Table with Filters
 
 [Dashboard Overview]<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />
 
@@ -52,7 +55,7 @@ The main dashboard displays water quality observations in an interactive table w
 
 ---
 
-### 📊 Summary Statistics Panel
+###  Summary Statistics Panel
 
 [Summary Statistics]<img width="3222" height="953" alt="Screenshot 2025-11-15 155232" src="https://github.com/user-attachments/assets/9bf5cfd5-67f3-4143-ae96-923736331d45" />
 
@@ -77,14 +80,14 @@ Comprehensive statistical overview across multiple parameters:
 
 ---
 
-### 📈 Visualizations
+###  Visualizations
 
 #### Temperature Over Time
 Track temporal trends and seasonal patterns in water temperature.
 
 #### Salinity Distribution
 
-[Salinity Distribution Histogram]<img width="3194" height="929" alt="Screenshot 2025-11-15 155132" src="https://github.com/user-attachments/assets/6d97fc6c-bc67-4a7d-b645-24f632558223" />
+<img width="3194" height="929" alt="Screenshot 2025-11-15 155132" src="https://github.com/user-attachments/assets/6d97fc6c-bc67-4a7d-b645-24f632558223" />
 
 
 This histogram shows the frequency distribution of salinity measurements:
@@ -102,7 +105,7 @@ This histogram shows the frequency distribution of salinity measurements:
 
 #### Temperature vs Salinity Correlation
 
-[Temperature vs Salinity Scatter Plot]<img width="3202" height="1038" alt="Screenshot 2025-11-15 155112" src="https://github.com/user-attachments/assets/575fea35-f7f9-49f0-a57a-3b8fc040a5c9" />
+<img width="3202" height="1038" alt="Screenshot 2025-11-15 155112" src="https://github.com/user-attachments/assets/575fea35-f7f9-49f0-a57a-3b8fc040a5c9" />
 
 
 This scatter plot reveals relationships between temperature and salinity, colored by dissolved oxygen (ODO) levels:
@@ -125,7 +128,7 @@ This scatter plot reveals relationships between temperature and salinity, colore
 
 #### Geographic Distribution Map
 
-[Observation Locations Map]<img width="3506" height="1508" alt="Screenshot 2025-11-15 155155" src="https://github.com/user-attachments/assets/d87cbdba-b66e-4682-aa41-36f8ae9d4bfe" />
+<img width="3506" height="1508" alt="Screenshot 2025-11-15 155155" src="https://github.com/user-attachments/assets/d87cbdba-b66e-4682-aa41-36f8ae9d4bfe" />
 
 
 Interactive map showing the exact path of the autonomous surface vehicle during data collection:
@@ -141,10 +144,7 @@ Interactive map showing the exact path of the autonomous surface vehicle during 
 
 ---
 
-### 🎯 Outlier Detection
-
-[Outlier Detection Interface]<img width="3254" height="1102" alt="Screenshot 2025-11-15 155253" src="https://github.com/user-attachments/assets/a6b27b69-6d9f-42bc-b81e-773283cfaa2e" />
-
+###  Outlier Detection
 
 Advanced statistical outlier detection with two methods:
 
@@ -190,7 +190,7 @@ Advanced statistical outlier detection with two methods:
 
 ---
 
-## 💻 Technology Stack
+##  Technology Stack
 
 **Backend**
 - **Flask**: RESTful API framework
@@ -207,7 +207,7 @@ Advanced statistical outlier detection with two methods:
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────┐
@@ -254,7 +254,7 @@ Advanced statistical outlier detection with two methods:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 .
@@ -274,7 +274,7 @@ Advanced statistical outlier detection with two methods:
 
 ---
 
-## 🚀 Quick Start (Windows, PowerShell)
+##  Quick Start (Windows, PowerShell)
 
 ### 1. Create Virtual Environment
 
@@ -334,7 +334,7 @@ Dashboard opens at `http://localhost:8501`
 
 ---
 
-## 📖 API Documentation
+##  API Documentation
 
 ### Base URL
 ```
@@ -527,11 +527,11 @@ GET /api/outliers?field=salinity&method=iqr&k=1.5
 
 
 
-## 📊 Dataset Information
+##  Dataset Information
 
 **Source**: FIU Marine Robotics - Biscayne Bay Expeditions  
 **Collection Method**: Autonomous Surface Vehicle (ASV) sensors  
-**Parameters Measured**:
+**Paramaters measured include**:
 - Temperature (°C)
 - Salinity (ppt - parts per thousand)
 - Dissolved Oxygen (mg/L)
@@ -543,9 +543,3 @@ GET /api/outliers?field=salinity&method=iqr&k=1.5
 
 
 
-
-## 📄 License
-
-[Specify your license here]
-
----
