@@ -1,197 +1,551 @@
+# Water Quality Data Dashboard 🌊
 
+A full-stack environmental monitoring platform for processing, analyzing, and visualizing water quality data collected by autonomous surface vehicles (ASVs) in FIU's Biscayne Bay marine robotics expeditions.
 
-This repository contains a Flask API and a Streamlit client for exploring water quality observations (temperature, salinity, ODO, and geolocation data). The project demonstrates data cleaning, server-side aggregation, pagination, summary statistics, and outlier detection.
+## Contributors
 
-##Contributors
-- [@AndrewPuig77](https://github.com/AndrewPuig77)- Andrew Puig - Collaborator
+- [@AndrewPuig77](https://github.com/AndrewPuig77) - Andrew Puig - Collaborator
 - [@devsingh1625](https://github.com/devsingh1625) — Devpreet Singh — Collaborator
 - [@MCobos3](https://github.com/MCobos3) — Matt Cobos — Collaborator
 - [@Sword105](https://github.com/Sword105) — Ethan Drouillard - Collaborator
 
+---
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Features & Dashboard](#features--dashboard)
+- [Technology Stack](#technology-stack)
+- [Architecture](#architecture)
+- [Quick Start](#quick-start)
+- [API Documentation](#api-documentation)
+- [Data Processing](#data-processing)
+
+---
+
+## 🎯 Overview
+
+This project provides a comprehensive solution for environmental researchers and scientists to:
+- Clean and process raw water quality sensor data
+- Query data through a RESTful API with advanced filtering
+- Visualize environmental trends and patterns interactively
+- Detect anomalies and outliers in real-time
+
+The system handles temperature (°C), salinity (ppt), dissolved oxygen (mg/L), pH levels, and other geolocation data collected from marine robotics expeditions in Biscayne Bay, Florida.
+
+---
+
+## ✨ Features & Dashboard
+
+### 🔍 Interactive Data Table with Filters
+
+![Dashboard Overview](<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />)
+<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />
+
+The main dashboard displays water quality observations in an interactive table with:
+- **Date Range Filtering**: Filter data by specific date ranges (e.g., 11/08/25 → 11/15/25)
+- **Real-time Metrics**: Shows total matching records (6,550), returned records (100), and current page (1/66)
+- **Pagination Controls**: Navigate through large datasets efficiently with Previous/Next buttons
+- **Multi-Column Display**: View date, time, latitude, longitude, temperature, salinity, and ODO simultaneously
+
+**Why this matters**: Environmental researchers need to quickly access specific time periods to study seasonal patterns, identify trends, or investigate particular events like algae blooms or temperature anomalies.
+
+---
+
+### 📊 Summary Statistics Panel
+
+![Summary Statistics](<img width="3222" height="953" alt="Screenshot 2025-11-15 155232" src="https://github.com/user-attachments/assets/9bf5cfd5-67f3-4143-ae96-923736331d45" />)
 
 
-## Contents
+Comprehensive statistical overview across multiple parameters:
 
-- `api/` - Flask API server
-	- `app.py` - REST API for observations, stats, outliers, and health checks
-- `main/` folder for main python file
-    - `main.py` - CSV ingestion and cleaning (z-score based outlier removal) that produces `data/cleaned.csv` and inserts cleaned records into MongoDB
-- `client/` - Streamlit dashboard
-	- `streamlit.py` - Interactive dashboard to query the API and render visualizations
-- `data/` - Source CSV files used for ingestion
-- `data/cleaned.csv` - Cleaned dataset produced by `api/main.py`
-- `requirements.txt` - Python dependencies
-- `README.md` - (this file)
+**Temperature**
+- Min: 26.60°C | Max: 32.10°C | Mean: 28.69°C
+- Count: 6,550 measurements
+
+**Salinity**
+- Min: 2.63 ppt | Max: 50.12 ppt | Mean: 32.51 ppt
+- Shows wide variation indicating different water zones
+
+**Dissolved Oxygen (ODO)**
+- Min: 2.42 mg/L | Max: 7.98 mg/L | Mean: 5.02 mg/L
+- Critical for aquatic life assessment
+
+**Additional Metrics**: Latitude, Longitude, pH levels with percentile distributions (P25, P50, P75)
+
+**Why this matters**: Quick statistical summaries help researchers understand the overall data distribution, identify normal ranges, and spot potential data quality issues before deep analysis.
+
+---
+
+### 📈 Visualizations
+
+#### Temperature Over Time
+Track temporal trends and seasonal patterns in water temperature.
+
+#### Salinity Distribution
+
+![Salinity Distribution Histogram](<img width="3194" height="929" alt="Screenshot 2025-11-15 155132" src="https://github.com/user-attachments/assets/6d97fc6c-bc67-4a7d-b645-24f632558223" />)
 
 
-## Quick Start (Windows, PowerShell)
+This histogram shows the frequency distribution of salinity measurements:
+- **Peak concentration** around 49.7 ppt (parts per thousand)
+- **Normal seawater range**: Most measurements cluster between 49.2 - 49.8 ppt
+- **Outliers visible** at lower ranges (49.3, 49.4, 49.5 ppt)
 
-1. Create a Python virtual environment and activate it
+**Why this matters**: Salinity distribution helps identify:
+- Freshwater intrusion from land runoff
+- Areas with different water masses
+- Mixing zones between ocean and estuary
+- Potential habitat boundaries for marine species
+
+---
+
+#### Temperature vs Salinity Correlation
+
+![Temperature vs Salinity Scatter Plot](<img width="3202" height="1038" alt="Screenshot 2025-11-15 155112" src="https://github.com/user-attachments/assets/575fea35-f7f9-49f0-a57a-3b8fc040a5c9" />
+)
+
+This scatter plot reveals relationships between temperature and salinity, colored by dissolved oxygen (ODO) levels:
+- **X-axis**: Temperature (°C) ranging from ~26.8 to 26.9
+- **Y-axis**: Salinity (ppt) ranging from ~49.2 to 49.8
+- **Color scale**: ODO levels from 4.0 (purple) to 5.0+ (yellow) mg/L
+
+**Key Insights**:
+- Most data points cluster tightly, indicating stable conditions
+- Higher ODO (yellow points) appears at specific temperature-salinity combinations
+- Vertical clustering suggests salinity varies more than temperature in this dataset
+
+**Why this matters**: 
+- Temperature-salinity relationships indicate water mass characteristics
+- ODO patterns help identify oxygen-rich vs oxygen-poor zones
+- Critical for understanding marine habitat suitability
+- Helps predict where fish and other organisms thrive
+
+---
+
+#### Geographic Distribution Map
+
+![Observation Locations Map](<img width="3506" height="1508" alt="Screenshot 2025-11-15 155155" src="https://github.com/user-attachments/assets/d87cbdba-b66e-4682-aa41-36f8ae9d4bfe" />
+)
+
+Interactive map showing the exact path of the autonomous surface vehicle during data collection:
+- **Location**: Near FIU Biscayne Bay Campus
+- **Path tracking**: Blue line shows ASV trajectory
+- **Hover functionality**: Click any point to see temperature, salinity, ODO, and timestamp
+
+**Why this matters**: 
+- Spatial context for understanding data variations
+- Identify sampling coverage gaps
+- Correlate measurements with physical geography
+- Plan future sampling routes
+
+---
+
+### 🎯 Outlier Detection
+
+![Outlier Detection Interface](<img width="3254" height="1102" alt="Screenshot 2025-11-15 155253" src="https://github.com/user-attachments/assets/a6b27b69-6d9f-42bc-b81e-773283cfaa2e" />)
+
+
+Advanced statistical outlier detection with two methods:
+
+**Z-Score Method** (shown in screenshot):
+- **Field**: Temperature selected
+- **Method**: Z-score (parametric method)
+- **K value**: 3.00 (threshold for standard deviations)
+- **Results**: 4 outliers found
+- **Detection Statistics**: Mean: 28.69, Std Dev: 1.14
+
+**Example Outliers Detected**:
+| Temperature | Latitude | Longitude | Date | Z-Score |
+|-------------|----------|-----------|------|---------|
+| 32.1°C | 25.881 | -80.1469 | 10/21/21 | 3.0014 |
+
+**Why Outlier Detection is Critical**:
+
+1. **Data Quality Assurance**
+   - Identifies sensor malfunctions or calibration errors
+   - Detects transmission errors in wireless data collection
+   - Flags physically impossible values (e.g., negative salinity)
+
+2. **Environmental Anomaly Detection**
+   - Spots unusual events like thermal discharge
+   - Identifies pollution incidents
+   - Detects harmful algae bloom indicators
+
+3. **Scientific Integrity**
+   - Ensures statistical analyses aren't skewed by bad data
+   - Maintains credibility of research findings
+   - Supports peer-reviewed publication standards
+
+4. **Real-World Applications**
+   - Early warning system for environmental hazards
+   - Validates autonomous sensor operation
+   - Guides maintenance and recalibration schedules
+
+**Two Detection Methods**:
+- **Z-Score**: Best for normally distributed data, measures standard deviations from mean
+- **IQR (Interquartile Range)**: More robust to non-normal distributions, uses quartile-based thresholds
+
+**Download Functionality**: Export outliers as CSV for detailed investigation and reporting
+
+---
+
+## 💻 Technology Stack
+
+**Backend**
+- **Flask**: RESTful API framework
+- **MongoDB**: NoSQL database for flexible document storage
+- **Pandas & NumPy**: Data processing and statistical analysis
+
+**Frontend**
+- **Streamlit**: Interactive dashboard framework
+- **Plotly**: Dynamic, responsive visualizations
+
+**Data Processing**
+- **Z-score Analysis**: Statistical outlier detection
+- **CSV Processing**: Automated data ingestion pipeline
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────┐
+│   Raw CSV Data  │
+│  (ASV Sensors)  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────┐
+│  Data Cleaning Pipeline │
+│  (main.py)              │
+│  - Z-score outlier      │
+│    detection (k=3.0)    │
+│  - CSV consolidation    │
+│  - Data validation      │
+└────────┬────────────────┘
+         │
+         ▼
+┌─────────────────────────┐
+│   MongoDB Database      │
+│   (water_quality_data)  │
+│   - Collection: asv_1   │
+└────────┬────────────────┘
+         │
+         ▼
+┌─────────────────────────┐
+│    Flask REST API       │
+│    (app.py)             │
+│  - /api/observations    │
+│  - /api/stats           │
+│  - /api/outliers        │
+│  - /api/dates           │
+└────────┬────────────────┘
+         │
+         ▼
+┌─────────────────────────┐
+│  Streamlit Dashboard    │
+│  (streamlit.py)         │
+│  - Interactive filters  │
+│  - Plotly charts        │
+│  - Real-time queries    │
+└─────────────────────────┘
+```
+
+---
+
+## 📂 Project Structure
+
+```
+.
+├── api/
+│   └── app.py                 # Flask REST API server
+├── main/
+│   └── main.py               # Data cleaning & MongoDB ingestion
+├── client/
+│   └── streamlit.py          # Interactive dashboard
+├── data/
+│   ├── source_data/          # Raw CSV files from ASV
+│   └── cleaned.csv           # Processed dataset
+├── requirements.txt          # Python dependencies
+├── .env                      # MongoDB credentials (not in repo)
+└── README.md                 # This file
+```
+
+---
+
+## 🚀 Quick Start (Windows, PowerShell)
+
+### 1. Create Virtual Environment
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-2. Install dependencies
+### 2. Install Dependencies
 
 ```powershell
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-3. Configure environment variables
+### 3. Configure Environment Variables
 
-Create a `.env` file in the repository root with the following values (use your MongoDB Atlas or local MongoDB credentials):
+Create a `.env` file in the repository root:
 
-```
+```env
 MONGODB_URI=cluster0.xxxxx.mongodb.net
 MONGO_USER=your_mongo_user
 MONGO_PASS=your_mongo_password
-# Optional: provide a standard connection string if SRV fails
-# MONGODB_STANDARD_URI=mongodb://host1:27017,host2:27017/<dbname>
 ```
 
-- Notes:
-- `MONGODB_URI` should be the host portion (without `mongodb+srv://`) when using the SRV connection method constructed inside `api/app.py`.
-- If you prefer a single connection string, set `MONGODB_STANDARD_URI` to a full MongoDB URI and the server will attempt that as a fallback.
+**Note**: `MONGODB_URI` should be the host portion only (without `mongodb+srv://`)
 
-4. Start the Flask API server
+### 4. Process and Clean Data
+
+```powershell
+python main/main.py
+```
+
+This will:
+- Load CSV files from `data/source_data/`
+- Apply Z-score outlier detection (k=3.0)
+- Export cleaned data to `data/cleaned.csv`
+- Insert records into MongoDB
+
+### 5. Start Flask API Server
 
 ```powershell
 python api/app.py
 ```
 
-By default the API runs on `http://127.0.0.1:5000`.
+API runs on `http://127.0.0.1:5000`
 
-5. Run csv file cleaner
-```powershell
-python main/main.py
-```
+### 6. Launch Streamlit Dashboard
 
-6. Start the Streamlit client (in a separate terminal)
+Open a **new terminal**, activate the virtual environment, then run:
 
 ```powershell
 streamlit run client/streamlit.py
 ```
 
-Open the address printed by Streamlit (typically `http://localhost:8501`) in your browser.
+Dashboard opens at `http://localhost:8501`
 
+---
 
-## API Documentation
+## 📖 API Documentation
 
-Base URL: `http://127.0.0.1:5000/api`
-
-All responses are JSON. The API expects cleaned data inserted by `api/main.py` or your own dataset inserted into the `water_quality_data.asv_1` collection in MongoDB.
-
-### GET /api/health
-
-Returns a basic health check
-
-Response:
+### Base URL
 ```
+http://127.0.0.1:5000/api
+```
+
+All responses are JSON format.
+
+---
+
+### GET `/api/health`
+
+Health check endpoint for monitoring.
+
+**Response**:
+```json
 { "status": "ok" }
 ```
 
+---
 
-### GET /api/dates
+### GET `/api/dates`
 
-Returns a list of distinct `date` string values from the database. Useful for populating date pickers.
+Returns distinct date values from the database.
 
-Response:
-```
-{ "dates": ["12/16/21", "10/21/21", ...] }
-```
-
-
-### GET /api/observations
-
-Query observations with optional filters and pagination.
-
-Query parameters:
-- `limit` (int) - number of records to return (default: 100, max: 1000)
-- `skip` (int) - offset for pagination (default: 0)
-- `date` (string) - exact match on stored date strings (expected format in this codebase: `MM/DD/YY`)
-- `date_start` / `date_end` (string) - inclusive date range. These are parsed and compared by converting DB date strings to `YYYY-MM-DD` internally.
-- `min_temp`, `max_temp` - numeric filters for `temperature`
-- `min_sal`, `max_sal` - numeric filters for `salinity`
-- `min_odo`, `max_odo` - numeric filters for `odo`
-
-Example:
-```
-GET /api/observations?limit=100&skip=0&date=12/16/21
-```
-
-Response:
-```
+**Response**:
+```json
 {
-	"count": 1234,            // total matching records
-	"returned": 100,         // number returned in this page
-	"items": [ ... ]         // array of observation objects
+  "dates": ["12/16/21", "10/21/21", "11/08/25", ...]
 }
 ```
 
-Notes:
-- Date range filtering uses aggregation to convert the stored `MM/DD/YY` strings to sortable `YYYY-MM-DD` strings. The API accepts 2-digit or 4-digit years but stores/compares using a normalized format internally for the range match.
+**Use Case**: Populate date picker dropdowns in UI
 
+---
 
-### GET /api/stats
+### GET `/api/observations`
 
-Return summary statistics for numeric fields.
+Query water quality observations with filtering and pagination.
 
-Query parameters:
-- `fields` (comma-separated strings) - which fields to compute stats for (defaults to `temperature,salinity,odo`)
+**Query Parameters**:
 
-Response:
+| Parameter | Type | Description | Example |
+|-----------|------|-------------|---------|
+| `limit` | int | Records per page (max: 1000) | `100` |
+| `skip` | int | Pagination offset | `0` |
+| `date` | string | Exact date match (MM/DD/YY) | `12/16/21` |
+| `date_start` | string | Range start date | `11/08/25` |
+| `date_end` | string | Range end date | `11/15/25` |
+| `min_temp` | float | Minimum temperature (°C) | `26.0` |
+| `max_temp` | float | Maximum temperature (°C) | `30.0` |
+| `min_sal` | float | Minimum salinity (ppt) | `30.0` |
+| `max_sal` | float | Maximum salinity (ppt) | `35.0` |
+| `min_odo` | float | Minimum dissolved oxygen (mg/L) | `4.0` |
+| `max_odo` | float | Maximum dissolved oxygen (mg/L) | `6.0` |
+
+**Example Request**:
 ```
+GET /api/observations?limit=100&skip=0&date_start=11/08/25&date_end=11/15/25&min_temp=26.0&max_temp=30.0
+```
+
+**Response**:
+```json
 {
-	"temperature": { "min": 10.0, "max": 25.0, "avg": 17.5, "stddev": 2.3 },
-	"salinity": { ... },
-	"odo": { ... }
+  "count": 6550,
+  "returned": 100,
+  "items": [
+    {
+      "date": "12/16/21",
+      "Time": "44:20.0",
+      "latitude": 25.9121,
+      "longitude": -80.1374,
+      "temperature": 26.8,
+      "salinity": 49.73,
+      "odo": 4.02,
+      "pH": 8.15
+    },
+    ...
+  ]
 }
 ```
 
-Currently returned stats: min, max, avg, stddev. Percentiles/count will be added in a future update.
+**Date Range Note**: The API converts MM/DD/YY strings to YYYY-MM-DD internally for proper chronological sorting using MongoDB aggregation.
 
+---
 
-### GET /api/outliers
+### GET `/api/stats`
 
-Detect outliers using either the Z-score or IQR method.
+Calculate summary statistics for numeric fields.
 
-Query parameters:
-- `field` (string) - field name to analyze (required)
-- `method` (string) - `zscore` (default) or `iqr`
-- `k` (float) - threshold value (default: `3.0` for zscore, `1.5` for iqr)
+**Query Parameters**:
+- `fields` (comma-separated) - Which fields to analyze (default: `temperature,salinity,odo`)
 
-Response (zscore example):
+**Example Request**:
 ```
+GET /api/stats?fields=temperature,salinity,odo
+```
+
+**Response**:
+```json
 {
-	"count": 3,
-	"outliers": [ { ... }, { ... } ],
-	"method": "zscore",
-	"field": "temperature",
-	"k": 3.0,
-	"statistics": { "mean": 17.5, "stddev": 2.3 }
+  "temperature": {
+    "min": 26.60,
+    "max": 32.10,
+    "avg": 28.69,
+    "stddev": 1.14
+  },
+  "salinity": {
+    "min": 2.63,
+    "max": 50.12,
+    "avg": 32.51,
+    "stddev": 8.42
+  },
+  "odo": {
+    "min": 2.42,
+    "max": 7.98,
+    "avg": 5.02,
+    "stddev": 0.95
+  }
 }
 ```
 
-Response (iqr example includes IQR stats and bounds):
+---
+
+### GET `/api/outliers`
+
+Detect statistical outliers using Z-score or IQR methods.
+
+**Query Parameters**:
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `field` | string | Yes | Field to analyze (`temperature`, `salinity`, `odo`) |
+| `method` | string | No | Detection method: `zscore` or `iqr` (default: `zscore`) |
+| `k` | float | No | Threshold value (default: 3.0 for zscore, 1.5 for iqr) |
+
+**Example Request (Z-Score)**:
 ```
+GET /api/outliers?field=temperature&method=zscore&k=3.0
+```
+
+**Response**:
+```json
 {
-	"statistics": { "q1": 12.5, "q3": 19.5, "iqr": 7.0, "lower_bound": ..., "upper_bound": ... }
+  "count": 4,
+  "outliers": [
+    {
+      "temperature": 32.1,
+      "latitude": 25.881,
+      "longitude": -80.1469,
+      "date": "10/21/21",
+      "z_score": 3.0014
+    },
+    ...
+  ],
+  "method": "zscore",
+  "field": "temperature",
+  "k": 3.0,
+  "statistics": {
+    "mean": 28.69,
+    "stddev": 1.14
+  }
 }
 ```
 
-
-## Data Ingestion and Cleaning
-
-`api/main.py` reads CSV files from `data/source_data/`, computes z-scores to identify and remove extreme outliers, and writes cleaned rows to `data/cleaned.csv`. It also inserts cleaned records into the MongoDB collection `water_quality_data.asv_1`.
-
-If you want to re-run ingestion:
-
-```powershell
-python api/main.py
+**Example Request (IQR)**:
+```
+GET /api/outliers?field=salinity&method=iqr&k=1.5
 ```
 
-This script will print counts of total, removed and inserted records.
+**Response**:
+```json
+{
+  "count": 12,
+  "outliers": [...],
+  "method": "iqr",
+  "field": "salinity",
+  "k": 1.5,
+  "statistics": {
+    "q1": 18.97,
+    "q3": 46.35,
+    "iqr": 27.38,
+    "lower_bound": -22.10,
+    "upper_bound": 87.42
+  }
+}
+```
 
+---
+
+
+
+## 📊 Dataset Information
+
+**Source**: FIU Marine Robotics - Biscayne Bay Expeditions  
+**Collection Method**: Autonomous Surface Vehicle (ASV) sensors  
+**Parameters Measured**:
+- Temperature (°C)
+- Salinity (ppt - parts per thousand)
+- Dissolved Oxygen (mg/L)
+- pH levels
+- GPS coordinates (latitude/longitude)
+- Timestamp
+- and more
+
+
+
+
+
+## 📄 License
+
+[Specify your license here]
+
+---
