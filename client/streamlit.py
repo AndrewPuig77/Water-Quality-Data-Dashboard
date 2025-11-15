@@ -31,7 +31,7 @@ except Exception:
 
 # Date filtering
 st.sidebar.subheader("Date Filter")
-date_mode = st.sidebar.radio("Mode", ["Single Date", "Date Range"], index=0, key="date_mode")
+date_mode = st.sidebar.radio("Mode", ["Single Date", "Date Range"], index=1, key="date_mode")
 
 # Initialize filter variables
 date_filter = None
@@ -307,10 +307,14 @@ if stats_fields:
                     st.markdown(f"**{field}**")
                     fstats = stats.get(field, {})
                     if fstats and fstats.get("min") is not None:
-                        st.write(f"Min: {fstats['min']}")
-                        st.write(f"Max: {fstats['max']}")
-                        st.write(f"Avg: {fstats['avg']}")
-                        st.write(f"Std Dev: {fstats['stddev']}")
+                        st.write(f"Min: {fstats['min']:.2f}")
+                        st.write(f"Max: {fstats['max']:.2f}")
+                        st.write(f"Mean: {fstats.get('mean', fstats.get('avg')):.2f}")
+                        st.write(f"Count: {fstats.get('count', 'N/A')}")
+                        if "percentiles" in fstats:
+                            st.write(f"P25: {fstats['percentiles']['25']:.2f}")
+                            st.write(f"P50: {fstats['percentiles']['50']:.2f}")
+                            st.write(f"P75: {fstats['percentiles']['75']:.2f}")
                     else:
                         st.write("No data available")
         else:
@@ -324,7 +328,7 @@ st.subheader("Outlier Detection")
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    outlier_field = st.selectbox("Field", options=available_fields, index=0 if "temperature" in available_fields else 0, key="outlier_field")
+    outlier_field = st.selectbox("Field", options=available_fields, index=available_fields.index("temperature") if "temperature" in available_fields else 0, key="outlier_field")
 with col2:
     outlier_method = st.selectbox("Method", ["zscore", "iqr"], key="outlier_method")
 with col3:

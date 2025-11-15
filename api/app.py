@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 import numpy as np
+import math
 
 app = Flask(__name__)
 
@@ -140,44 +141,69 @@ def get_observations():
 #----- Get Stats -----
 @app.route("/api/stats", methods=["GET"])
 def get_stats():
-    numeric_fields = ["temperature", "salinity", "odo"]
+    # Get fields from query parameter (comma-separated), default to temperature, salinity, odo
+    fields_param = request.args.get("fields", "temperature,salinity,odo")
+    numeric_fields = [f.strip() for f in fields_param.split(",") if f.strip()]
+    
     stats = {}
     
     for field in numeric_fields:
-        # Get all values for this field (excluding None/null)
-        cursor = collection.find({field: {"$ne": None}}, {"_id": 0, field: 1})
-        values = [doc[field] for doc in cursor if field in doc and doc[field] is not None]
-        
-        if len(values) == 0:
+        try:
+            # Get all values for this field (excluding None/null)
+            cursor = collection.find({field: {"$ne": None, "$exists": True}}, {"_id": 0, field: 1})
+            
+            # Extract values and convert to numeric, filtering out non-numeric values
+            values = []
+            for doc in cursor:
+                if field in doc and doc[field] is not None:
+                    try:
+                        # Try to convert to float
+                        val = float(doc[field])
+                        if not (math.isnan(val) or math.isinf(val)):
+                            values.append(val)
+                    except (ValueError, TypeError):
+                        # Skip non-numeric values
+                        continue
+            
+            if len(values) == 0:
+                stats[field] = {
+                    "count": 0,
+                    "mean": None,
+                    "min": None,
+                    "max": None,
+                    "percentiles": {
+                        "25": None,
+                        "50": None,
+                        "75": None
+                    }
+                }
+            else:
+                values_array = np.array(values)
+                stats[field] = {
+                    "count": len(values),
+                    "mean": float(np.mean(values_array)),
+                    "min": float(np.min(values_array)),
+                    "max": float(np.max(values_array)),
+                    "percentiles": {
+                        "25": float(np.percentile(values_array, 25)),
+                        "50": float(np.percentile(values_array, 50)),
+                        "75": float(np.percentile(values_array, 75))
+                    }
+                }
+        except Exception as e:
+            # If there's an error processing this field, return error info
             stats[field] = {
+                "error": str(e),
                 "count": 0,
                 "mean": None,
                 "min": None,
-                "max": None,
-                "percentiles": {
-                    "25": None,
-                    "50": None,
-                    "75": None
-                }
-            }
-        else:
-            values_array = np.array(values)
-            stats[field] = {
-                "count": len(values),
-                "mean": float(np.mean(values_array)),
-                "min": float(np.min(values_array)),
-                "max": float(np.max(values_array)),
-                "percentiles": {
-                    "25": float(np.percentile(values_array, 25)),
-                    "50": float(np.percentile(values_array, 50)),
-                    "75": float(np.percentile(values_array, 75))
-                }
+                "max": None
             }
     
     return jsonify(stats)
 
 # ---- Get Outliers ----
-app.route("/api/outliers", methods=["GET"])
+@app.route("/api/outliers", methods=["GET"])
 def get_outliers():
     """
     Detect outliers using either Z-score or IQR method.
@@ -191,10 +217,9 @@ def get_outliers():
     field = request.args.get("field")
     method = request.args.get("method", "zscore").lower()
     
-    # Validate field
-    valid_fields = ["temperature", "salinity", "odo"]
-    if field not in valid_fields:
-        return jsonify({"error": f"field must be one of {valid_fields}"}), 400
+    # Validate field is provided
+    if not field:
+        return jsonify({"error": "field parameter is required"}), 400
     
     # Validate method
     if method not in ["zscore", "iqr"]:
@@ -244,6 +269,13 @@ def get_outliers():
                     "message": "Standard deviation is zero, no outliers detected"
                 })
             
+            # Build projection to avoid duplicate fields
+            projection = {"_id": 0, field: 1, "z_score": 1}
+            # Add standard fields only if they're not the selected field
+            for std_field in ["latitude", "longitude", "date"]:
+                if std_field != field:
+                    projection[std_field] = 1
+            
             # Find outliers using aggregation pipeline
             outlier_pipeline = [
                 {"$match": {field: {"$ne": None, "$exists": True}}},
@@ -267,7 +299,7 @@ def get_outliers():
                         }
                     }
                 },
-                {"$project": {"_id": 0}}
+                {"$project": projection}
             ]
             
         else:  # IQR method
@@ -299,6 +331,13 @@ def get_outliers():
             lower_bound = q1 - k * iqr
             upper_bound = q3 + k * iqr
             
+            # Build projection to avoid duplicate fields
+            projection = {"_id": 0, field: 1}
+            # Add standard fields only if they're not the selected field
+            for std_field in ["latitude", "longitude", "date"]:
+                if std_field != field:
+                    projection[std_field] = 1
+            
             # Find outliers
             outlier_pipeline = [
                 {
@@ -310,7 +349,7 @@ def get_outliers():
                         ]
                     }
                 },
-                {"$project": {"_id": 0}}
+                {"$project": projection}
             ]
         
         # Execute the pipeline
