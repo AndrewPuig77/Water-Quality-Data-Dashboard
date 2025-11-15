@@ -39,7 +39,7 @@ The system handles temperature (°C), salinity (ppt), dissolved oxygen (mg/L), p
 
 ### 🔍 Interactive Data Table with Filters
 
-![Dashboard Overview]<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />
+[Dashboard Overview]<img width="3241" height="1241" alt="Screenshot 2025-11-15 153342" src="https://github.com/user-attachments/assets/e7505b05-7087-4fd2-8c6e-a84312350881" />
 
 
 The main dashboard displays water quality observations in an interactive table with:
@@ -54,7 +54,7 @@ The main dashboard displays water quality observations in an interactive table w
 
 ### 📊 Summary Statistics Panel
 
-![Summary Statistics](<img width="3222" height="953" alt="Screenshot 2025-11-15 155232" src="https://github.com/user-attachments/assets/9bf5cfd5-67f3-4143-ae96-923736331d45" />)
+[Summary Statistics]<img width="3222" height="953" alt="Screenshot 2025-11-15 155232" src="https://github.com/user-attachments/assets/9bf5cfd5-67f3-4143-ae96-923736331d45" />
 
 
 Comprehensive statistical overview across multiple parameters:
@@ -84,7 +84,7 @@ Track temporal trends and seasonal patterns in water temperature.
 
 #### Salinity Distribution
 
-![Salinity Distribution Histogram](<img width="3194" height="929" alt="Screenshot 2025-11-15 155132" src="https://github.com/user-attachments/assets/6d97fc6c-bc67-4a7d-b645-24f632558223" />)
+[Salinity Distribution Histogram]<img width="3194" height="929" alt="Screenshot 2025-11-15 155132" src="https://github.com/user-attachments/assets/6d97fc6c-bc67-4a7d-b645-24f632558223" />
 
 
 This histogram shows the frequency distribution of salinity measurements:
@@ -102,8 +102,8 @@ This histogram shows the frequency distribution of salinity measurements:
 
 #### Temperature vs Salinity Correlation
 
-![Temperature vs Salinity Scatter Plot](<img width="3202" height="1038" alt="Screenshot 2025-11-15 155112" src="https://github.com/user-attachments/assets/575fea35-f7f9-49f0-a57a-3b8fc040a5c9" />
-)
+[Temperature vs Salinity Scatter Plot]<img width="3202" height="1038" alt="Screenshot 2025-11-15 155112" src="https://github.com/user-attachments/assets/575fea35-f7f9-49f0-a57a-3b8fc040a5c9" />
+
 
 This scatter plot reveals relationships between temperature and salinity, colored by dissolved oxygen (ODO) levels:
 - **X-axis**: Temperature (°C) ranging from ~26.8 to 26.9
@@ -125,8 +125,8 @@ This scatter plot reveals relationships between temperature and salinity, colore
 
 #### Geographic Distribution Map
 
-![Observation Locations Map](<img width="3506" height="1508" alt="Screenshot 2025-11-15 155155" src="https://github.com/user-attachments/assets/d87cbdba-b66e-4682-aa41-36f8ae9d4bfe" />
-)
+[Observation Locations Map]<img width="3506" height="1508" alt="Screenshot 2025-11-15 155155" src="https://github.com/user-attachments/assets/d87cbdba-b66e-4682-aa41-36f8ae9d4bfe" />
+
 
 Interactive map showing the exact path of the autonomous surface vehicle during data collection:
 - **Location**: Near FIU Biscayne Bay Campus
@@ -143,7 +143,7 @@ Interactive map showing the exact path of the autonomous surface vehicle during 
 
 ### 🎯 Outlier Detection
 
-![Outlier Detection Interface](<img width="3254" height="1102" alt="Screenshot 2025-11-15 155253" src="https://github.com/user-attachments/assets/a6b27b69-6d9f-42bc-b81e-773283cfaa2e" />)
+[Outlier Detection Interface]<img width="3254" height="1102" alt="Screenshot 2025-11-15 155253" src="https://github.com/user-attachments/assets/a6b27b69-6d9f-42bc-b81e-773283cfaa2e" />
 
 
 Advanced statistical outlier detection with two methods:
