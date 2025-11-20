@@ -42,7 +42,9 @@ The system handles temperature (°C), salinity (ppt), dissolved oxygen (mg/L), p
 
 ###  Interactive Data Table with Filters
 
-[Dashboard Overview]<img width="3648" height="1946" alt="Screenshot 2025-11-15 180209" src="https://github.com/user-attachments/assets/262dcc69-7a04-4a07-a7d5-8016446d6e90" />
+Environmental researchers need to quickly access specific time periods to study seasonal patterns, identify trends, or investigate particular events like algae blooms or temperature anomalies
+
+<img width="3648" height="1946" alt="Screenshot 2025-11-15 180209" src="https://github.com/user-attachments/assets/262dcc69-7a04-4a07-a7d5-8016446d6e90" />
 
 Left Sidebar - Filter Controls
 **Date Filtering**
@@ -73,16 +75,15 @@ Left Sidebar - Filter Controls
 The main dashboard displays water quality observations in an interactive table with:
 - **Date Range Filtering**: Filter data by specific date ranges (e.g., 11/08/25 → 11/15/25)
 - **Real-time Metrics**: Shows total matching records (6,550), returned records (100), and current page (1/66)
-- **Pagination Controls**: Navigate through large datasets efficiently with Previous/Next buttons
+- **Pagination Controls**: Navigate through datasets with Previous/Next buttons
 - **Multi-Column Display**: View date, time, latitude, longitude, temperature, salinity, and ODO simultaneously
 
-**Why this matters**: Environmental researchers need to quickly access specific time periods to study seasonal patterns, identify trends, or investigate particular events like algae blooms or temperature anomalies.
 
 ---
 
 ###  Summary Statistics Panel
 
-[Summary Statistics]<img width="3222" height="953" alt="Screenshot 2025-11-15 155232" src="https://github.com/user-attachments/assets/9bf5cfd5-67f3-4143-ae96-923736331d45" />
+<img width="3222" height="953" alt="Screenshot 2025-11-15 155232" src="https://github.com/user-attachments/assets/9bf5cfd5-67f3-4143-ae96-923736331d45" />
 
 
 Comprehensive statistical overview across multiple parameters:
